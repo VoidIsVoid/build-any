@@ -5,8 +5,9 @@ source "/root/.sdkman/bin/sdkman-init.sh"
 sdk install java 11.0.24-zulu
 
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-source /root/.bashrc
-cat /root/.bashrc
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+
 nvm install 20
 
 cat << "EOF" > package.json
