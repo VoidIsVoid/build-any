@@ -6,6 +6,7 @@ sdk install java 11.0.24-zulu
 
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 source /root/.bashrc
+cat /root/.bashrc
 nvm install 20
 
 cat << "EOF" > package.json
