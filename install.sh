@@ -1,12 +1,11 @@
 apt update -y
 apt install -y curl zip unzip
 curl -s "https://get.sdkman.io" | bash
-source "/root/.sdkman/bin/sdkman-init.sh"
+# source "/root/.sdkman/bin/sdkman-init.sh"
 sdk install java 11.0.24-zulu
 
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+. /root/.bashrc
 
 nvm install 20
 
