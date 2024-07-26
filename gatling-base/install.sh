@@ -38,5 +38,5 @@ cat << "EOF" > package.json
   }
 }
 EOF
-npm_config_registry=http://mirrors.cloud.tencent.com/npm npm i
+npm i
 npx gatling install
