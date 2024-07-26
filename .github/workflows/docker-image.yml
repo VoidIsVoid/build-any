@@ -8,13 +8,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Set up Docker BuildX
-        uses: docker/setup-buildx-action@v2   
-      - name: build
-        run: cd $(cat current) && docker buildx build --platform linux/arm64 -t ${{ secrets.DOCKERHUB_USERNAME }}/$(cat docker-name.txt):$(cat docker-tag.txt) .
+        uses: docker/setup-buildx-action@v2
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: push api
-        run: cd $(cat current) && docker push ${{ secrets.DOCKERHUB_USERNAME }}/$(cat docker-name.txt):$(cat docker-tag.txt)
+      - name: build and push 
+        run: cd $(cat current) && docker buildx build --platform linux/arm64 --push -t ${{ secrets.DOCKERHUB_USERNAME }}/$(cat docker-name.txt):$(cat docker-tag.txt) .
