@@ -8,7 +8,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: build
-        run: cd $(cat current) && docker buildx build --platform linux/arm64 -t ${{ secrets.DOCKERHUB_USERNAME }}/$(cat docker-name.txt):$(cat docker-tag.txt) .
+        run: cd $(cat current) && docker build --platform linux/arm64 -t ${{ secrets.DOCKERHUB_USERNAME }}/$(cat docker-name.txt):$(cat docker-tag.txt) .
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
