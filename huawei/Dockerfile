@@ -6,6 +6,9 @@ ARG TOOLKIT_PATH=/usr/local/Ascend/ascend-toolkit/latest
 ARG MINDSPORE_PKG=mindspore-8.0.RC3.alpha001-cp39-cp39-linux_aarch64.whl
 # ARG PREBUILD_SH=prebuild.sh 
 # ARG POSTBUILD_SH=postbuild.sh 
+ARG DEBIAN_FRONTEND=noninteractive
+ENV TZ=Etc/UTC
+
 WORKDIR /tmp 
 COPY . ./ 
 
