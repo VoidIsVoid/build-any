@@ -1,81 +1,84 @@
-FROM ubuntu:20.04 
+FROM ubuntu:18.04
 
-ARG HOST_ASCEND_BASE=/usr/local/Ascend 
-ARG INSTALL_ASCEND_PKGS_SH=install_ascend_pkgs.sh 
+ARG HOST_ASCEND_BASE=/usr/local/Ascend
+ARG INSTALL_ASCEND_PKGS_SH=install_ascend_pkgs.sh
 ARG TOOLKIT_PATH=/usr/local/Ascend/ascend-toolkit/latest 
-ARG MINDSPORE_PKG=mindspore-8.0.RC3.alpha001-cp39-cp39-linux_aarch64.whl
-# ARG PREBUILD_SH=prebuild.sh 
-# ARG POSTBUILD_SH=postbuild.sh 
-ARG DEBIAN_FRONTEND=noninteractive
-ENV TZ=Etc/UTC
+# ARG MINDSPORE_PKG=mindspore-2.2.14-cp37-cp37m-linux_aarch64.whl
+# ARG PREBUILD_SH=prebuild.sh
+# ARG POSTBUILD_SH=postbuild.sh
+WORKDIR /tmp
+COPY . ./
 
-WORKDIR /tmp 
-COPY . ./ 
+# 触发prebuild.sh
+# RUN bash -c "test -f $PREBUILD_SH && bash $PREBUILD_SH"
 
-# 触发prebuild.sh 
-# RUN bash -c "test -f $PREBUILD_SH && bash $PREBUILD_SH" 
+# ENV http_proxy http://xxx.xxx.xxx.xxx:xxx
+# ENV https_proxy http://xxx.xxx.xxx.xxx:xxx
 
-# ENV http_proxy http://xxx
-# ENV https_proxy http://xxx
+# 系统包
+RUN apt update && \
+    apt install --no-install-recommends python3.7 python3.7-dev curl g++ pkg-config unzip \
+        libblas3 liblapack3 liblapack-dev libblas-dev gfortran libhdf5-dev libffi-dev libicu60 libxml2 \ 
+            libgmp-dev -y
 
+# 建立Python软链接
+RUN ln -s /usr/bin/python3.7 /usr/bin/python
 
-# 系统包 
-RUN apt update && \ 
-    apt install --no-install-recommends curl g++ pkg-config unzip wget build-essential zlib1g-dev  \
-        libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libblas3 liblapack3 liblapack-dev openssl libssl-dev libblas-dev gfortran libhdf5-dev libffi-dev  libxml2 -y
+# 配置Python pip源
+RUN mkdir -p ~/.pip \
+&& echo '[global] \n\
+index-url=https://pypi.doubanio.com/simple/\n\
+trusted-host=pypi.doubanio.com' >> ~/.pip/pip.conf
 
-# 根据实际mindspore软件包安装对应的python版本
-RUN wget https://www.python.org/ftp/python/3.9.2/Python-3.9.2.tgz --no-check-certificate
-RUN tar -zxvf Python-3.9.2.tgz && cd Python-3.9.2 && ./configure --prefix=/usr/local/python3.9.2 --enable-shared && make && make install 
-
-RUN ln -s /usr/local/python3.9.2/bin/python3.9 /usr/local/python3.9.2/bin/python && \
-    ln -s /usr/local/python3.9.2/bin/pip3.9 /usr/local/python3.9.2/bin/pip
-
-
-# 配置Python pip源 
-# RUN mkdir -p ~/.pip \ 
-# && echo '[global] \n\ 
-# index-url=https://pypi.doubanio.com/simple/\n\ 
-# trusted-host=pypi.doubanio.com' >> ~/.pip/pip.conf 
-
-# 用户需根据实际情况修改PYTHONPATH的路径
-ENV LD_LIBRARY_PATH=/usr/local/python3.9.2/lib:$LD_LIBRARY_PATH
-ENV PATH=/usr/local/python3.9.2/bin:$PATH 
-ENV PYTHONPATH=/usr/local/python3.9.2/lib/python3.9/site-packages:$PYTHONPATH   
+# pip3.7
+RUN curl -k https://bootstrap.pypa.io/get-pip.py -o get-pip.py && \
+    cd /tmp && \
+    apt-get download python3-distutils && \
+    dpkg-deb -x python3-distutils_*.deb / && \
+    rm python3-distutils_*.deb && \
+    cd - && \
+    python3.7 get-pip.py && \
+    rm get-pip.py
 
 # 创建HwHiAiUser用户和属主，UID和GID请与物理机保持一致避免出现无属主文件。示例中会自动创建user和对应的group，UID和GID都为1000
 RUN useradd -d /home/HwHiAiUser -u 1000 -m -s /bin/bash HwHiAiUser
 
-# Python包 
-RUN pip install --upgrade pip && \
-    pip install numpy && \ 
-    pip install decorator && \ 
-    pip install sympy==1.4 && \ 
-    pip install cffi==1.12.3 && \ 
-    pip install pyyaml && \ 
-    pip install pathlib2 && \ 
-    pip install grpcio && \ 
-    pip install grpcio-tools && \ 
-    pip install protobuf && \ 
-    pip install scipy && \ 
-    pip install requests && \
-    pip install kubernetes && \
-    pip install attrs && \
-    pip install psutil && \
-    pip install absl-py
+ # 用户需根据实际情况修改PYTHONPATH的路径
+ENV PYTHONPATH=/usr/local/python3.7.5/lib/python3.7/site-packages:$PYTHONPATH 
 
-# Ascend包 
-RUN umask 0022 && bash $INSTALL_ASCEND_PKGS_SH 
+# Python包
+RUN pip3.7 install numpy && \
+    pip3.7 install decorator && \
+    pip3.7 install sympy==1.4 && \
+    pip3.7 install cffi==1.12.3 && \
+    pip3.7 install pyyaml && \
+    pip3.7 install pathlib2 && \
+    pip3.7 install grpcio && \
+    pip3.7 install grpcio-tools && \
+    pip3.7 install protobuf && \
+    pip3.7 install scipy && \
+    pip3.7 install requests && \
+    pip3.7 install easydict && \
+    pip3.7 install attrs && \
+    pip3.7 install psutil && \
+    pip3.7 install absl-py
 
-# MindSpore安装 
-# RUN pip install $MINDSPORE_PKG 
-RUN pip install https://ms-release.obs.cn-north-4.myhuaweicloud.com/2.3.0/MindSpore/unified/aarch64/mindspore-2.3.0-cp39-cp39-linux_aarch64.whl
+# Ascend包
+RUN umask 0022 && bash $INSTALL_ASCEND_PKGS_SH
 
-# ENV http_proxy "" 
-# ENV https_proxy "" 
+# MindSpore安装
+RUN pip3.7 install https://ms-release.obs.cn-north-4.myhuaweicloud.com/2.2.14/MindSpore/unified/aarch64/mindspore-2.2.14-cp37-cp37m-linux_aarch64.whl
 
-# 触发postbuild.sh 
-# RUN bash -c "test -f $POSTBUILD_SH && bash $POSTBUILD_SH" && \ 
+# 创建/lib64/ld-linux-aarch64.so.1
+RUN umask 0022 && \
+    if [ ! -d "/lib64" ]; \
+    then \
+        mkdir /lib64 && ln -sf /lib/ld-linux-aarch64.so.1 /lib64/ld-linux-aarch64.so.1; \
+    fi
+
+# ENV http_proxy ""
+# ENV https_proxy ""
+
+# 触发postbuild.sh
+# RUN bash -c "test -f $POSTBUILD_SH && bash $POSTBUILD_SH" && \
 #     rm $POSTBUILD_SH
-
-ENV TZ=Etc/UTC

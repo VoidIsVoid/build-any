@@ -11,11 +11,11 @@ mkdir -p /usr/local/Ascend/driver/
 cp version.info /usr/local/Ascend/driver/
 
 # Ascend-cann-toolkit_{version}_linux-{arch}.run
-curl -k -o Ascend-cann-toolkit_8.0.RC3.alpha001_linux-aarch64.run https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/Milan-ASL/Milan-ASL%20V100R001C19SPC802/Ascend-cann-toolkit_8.0.RC3.alpha001_linux-aarch64.run?response-content-type=application/octet-stream
-chmod +x Ascend-cann-toolkit_8.0.RC3.alpha001_linux-aarch64.run
-./Ascend-cann-toolkit_8.0.RC3.alpha001_linux-aarch64.run --install-path=/usr/local/Ascend/ --install --quiet
+curl -k -o Ascend-cann-toolkit_7.0.1_linux-aarch64.run https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/CANN/CANN%207.0.1/Ascend-cann-toolkit_7.0.1_linux-aarch64.run?response-content-type=application/octet-stream
+chmod +x Ascend-cann-toolkit_7.0.1_linux-aarch64.run
+./Ascend-cann-toolkit_7.0.1_linux-aarch64.run --install-path=/usr/local/Ascend/ --install --quiet
 
-rm Ascend-cann-toolkit_8.0.RC3.alpha001_linux-aarch64.run
+rm Ascend-cann-toolkit_7.0.1_linux-aarch64.run
 # 只安装toolkit包，需要清理，容器启动时通过ascend docker挂载进来
 # rm -f version.info
 # rm -rf /usr/local/Ascend/driver/
