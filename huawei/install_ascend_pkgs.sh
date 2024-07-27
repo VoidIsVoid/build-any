@@ -16,5 +16,5 @@ chmod +x Ascend-cann-toolkit_8.0.RC3.alpha001_linux-aarch64.run
  
 rm Ascend-cann-toolkit_8.0.RC3.alpha001_linux-aarch64.run
 # 只安装toolkit包，需要清理，容器启动时通过ascend docker挂载进来
-rm -f version.info
-rm -rf /usr/local/Ascend/driver/
+# rm -f version.info
+# rm -rf /usr/local/Ascend/driver/
