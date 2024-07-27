@@ -11,7 +11,7 @@ mkdir -p /usr/local/Ascend/driver/
 cp version.info /usr/local/Ascend/driver/
 
 # Ascend-cann-toolkit_{version}_linux-{arch}.run
-curl -O https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/Milan-ASL/Milan-ASL%20V100R001C19SPC802/Ascend-cann-toolkit_8.0.RC3.alpha001_linux-aarch64.run?response-content-type=application/octet-stream
+curl -k -O https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/Milan-ASL/Milan-ASL%20V100R001C19SPC802/Ascend-cann-toolkit_8.0.RC3.alpha001_linux-aarch64.run?response-content-type=application/octet-stream
 chmod +x Ascend-cann-toolkit_8.0.RC3.alpha001_linux-aarch64.run
 ./Ascend-cann-toolkit_8.0.RC3.alpha001_linux-aarch64.run --install-path=/usr/local/Ascend/ --install --quiet
 
