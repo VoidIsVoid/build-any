@@ -5,6 +5,7 @@
 # 注：本脚本运行结束后不会被自动清除，若无需保留在镜像中请在postbuild.sh脚本中清除
 #--------------------------------------------------------------------------------
 # 构建之前把host上的/etc/ascend_install.info拷贝一份到当前目录
+set -e
 cp ascend_install.info /etc/
 mkdir -p /usr/local/Ascend/driver/
 cp version.info /usr/local/Ascend/driver/

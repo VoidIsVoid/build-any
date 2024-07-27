@@ -7,7 +7,7 @@ ARG MINDSPORE_PKG=mindspore-8.0.RC3.alpha001-cp39-cp39-linux_aarch64.whl
 # ARG PREBUILD_SH=prebuild.sh 
 # ARG POSTBUILD_SH=postbuild.sh 
 ARG DEBIAN_FRONTEND=noninteractive
-ENV TZ=Asia/Shanghai
+ENV TZ=Etc/UTC
 
 WORKDIR /tmp 
 COPY . ./ 
@@ -77,3 +77,5 @@ RUN pip install https://ms-release.obs.cn-north-4.myhuaweicloud.com/2.3.0/MindSp
 # 触发postbuild.sh 
 # RUN bash -c "test -f $POSTBUILD_SH && bash $POSTBUILD_SH" && \ 
 #     rm $POSTBUILD_SH
+
+ENV TZ=Etc/UTC
