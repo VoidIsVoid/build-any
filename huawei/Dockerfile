@@ -24,14 +24,8 @@ RUN apt update && \
 # 建立Python软链接
 RUN ln -s /usr/bin/python3.7 /usr/bin/python
 
-# 配置Python pip源
-RUN mkdir -p ~/.pip \
-&& echo '[global] \n\
-index-url=https://pypi.doubanio.com/simple/\n\
-trusted-host=pypi.doubanio.com' >> ~/.pip/pip.conf
-
 # pip3.7
-RUN curl -k https://bootstrap.pypa.io/get-pip.py -o get-pip.py && \
+RUN curl -k https://bootstrap.pypa.io/pip/3.7/get-pip.py -o get-pip.py && \
     cd /tmp && \
     apt-get download python3-distutils && \
     dpkg-deb -x python3-distutils_*.deb / && \
