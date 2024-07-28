@@ -21,7 +21,7 @@ COPY . ./
 # 系统包 
 RUN apt update && \ 
     apt install --no-install-recommends curl g++ pkg-config unzip wget build-essential zlib1g-dev  \
-        libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libblas3 liblapack3 liblapack-dev openssl libssl-dev libblas-dev gfortran libhdf5-dev libffi-dev  libxml2 -y
+        libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libblas3 liblapack3 liblapack-dev openssl libssl-dev libblas-dev gfortran libhdf5-dev libffi-dev  libxml2 libbz2-dev -y
 
 # 根据实际mindspore软件包安装对应的python版本
 RUN wget https://www.python.org/ftp/python/3.9.2/Python-3.9.2.tgz --no-check-certificate
