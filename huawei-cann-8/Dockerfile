@@ -62,14 +62,11 @@ RUN pip install --no-cache-dir --upgrade pip && \
     attrs \
     psutil \
     absl-py \
-    https://ms-release.obs.cn-north-4.myhuaweicloud.com/2.2.14/MindSpore/unified/aarch64/mindspore-2.2.14-cp39-cp39-linux_aarch64.whl \
+    https://ms-release.obs.cn-north-4.myhuaweicloud.com/2.3.0/MindSpore/unified/aarch64/mindspore-2.3.0-cp39-cp39-linux_aarch64.whl \
     mindnlp
 
 # Ascend包 
 RUN umask 0022 && bash $INSTALL_ASCEND_PKGS_SH 
-
-# MindSpore安装 
-RUN pip install https://ms-release.obs.cn-north-4.myhuaweicloud.com/2.2.14/MindSpore/unified/aarch64/mindspore-2.2.14-cp39-cp39-linux_aarch64.whl mindnlp
 
 # RUN pip install mindnlp
 
