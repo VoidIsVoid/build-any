@@ -7,7 +7,7 @@ ARG MINDSPORE_PKG=mindspore-{version}-cp39-cp39-linux_aarch64.whl
 # ARG PREBUILD_SH=prebuild.sh 
 # ARG POSTBUILD_SH=postbuild.sh 
 ARG DEBIAN_FRONTEND=noninteractive
-ARG PYTHON_VERSION=3.9.19
+# ARG PYTHON_VERSION=3.9.19
 
 WORKDIR /tmp 
 COPY . ./ 
@@ -22,16 +22,18 @@ COPY . ./
 # 系统包 
 RUN apt update && \
     apt install --no-install-recommends curl g++ pkg-config unzip wget build-essential zlib1g-dev  \
-        libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libblas3 liblapack3 liblapack-dev openssl libssl-dev libblas-dev gfortran libhdf5-dev libffi-dev  libxml2 libbz2-dev lzma liblzma-dev libsqlite3-dev -y
+        libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libblas3 liblapack3 liblapack-dev \
+        openssl libssl-dev libblas-dev gfortran libhdf5-dev libffi-dev  libxml2 \
+        libbz2-dev lzma liblzma-dev libsqlite3-dev python3 -y
 
 # 根据实际mindspore软件包安装对应的python版本
 
-RUN wget -O Python.tgz https://www.python.org/ftp/python/$PYTHON_VERSION/Python-$PYTHON_VERSION.tgz --no-check-certificate
-RUN tar -zxvf Python.tgz && cd Python-$PYTHON_VERSION && ./configure --prefix=/usr/local/python --enable-shared && make && make install 
+# RUN wget -O Python.tgz https://www.python.org/ftp/python/$PYTHON_VERSION/Python-$PYTHON_VERSION.tgz --no-check-certificate
+# RUN tar -zxvf Python.tgz && cd Python-$PYTHON_VERSION && ./configure --prefix=/usr/local/python --enable-shared && make && make install 
 
 
-RUN ln -s /usr/local/python/bin/python3.9 /usr/local/python/bin/python && \
-    ln -s /usr/local/python/bin/pip3.9 /usr/local/python/bin/pip
+# RUN ln -s /usr/local/python/bin/python3.9 /usr/local/python/bin/python && \
+#     ln -s /usr/local/python/bin/pip3.9 /usr/local/python/bin/pip
 
 
 # 配置Python pip源 
@@ -74,7 +76,7 @@ RUN umask 0022 && bash $INSTALL_ASCEND_PKGS_SH
 RUN . /usr/local/Ascend/ascend-toolkit/set_env.sh
 
 # MindSpore安装 
-RUN CMAKE_ARGS="-DGGML_METAL=on" pip install llama-cpp-python
+RUN CMAKE_ARGS="-DGGML_CANN=on" pip install llama-cpp-python
 
 # RUN pip install mindnlp
 
