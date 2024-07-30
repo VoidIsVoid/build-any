@@ -24,7 +24,9 @@ RUN apt update && \
     apt install --no-install-recommends curl g++ pkg-config unzip wget build-essential zlib1g-dev  \
         libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libblas3 liblapack3 liblapack-dev \
         openssl libssl-dev libblas-dev gfortran libhdf5-dev libffi-dev  libxml2 \
-        libbz2-dev lzma liblzma-dev libsqlite3-dev python3 -y
+        libbz2-dev lzma liblzma-dev libsqlite3-dev -y && \
+    apt install software-properties-common -y && add-apt-repository ppa:deadsnakes/ppa && apt install -y python3.9 && ln -s /usr/bin/python3.9 /usr/local/bin/python && \
+    apt install -y python3.9-distutils && bash -c 'curl https://bootstrap.pypa.io/get-pip.py | python'
 
 # 根据实际mindspore软件包安装对应的python版本
 
@@ -76,7 +78,7 @@ RUN umask 0022 && bash $INSTALL_ASCEND_PKGS_SH
 RUN . /usr/local/Ascend/ascend-toolkit/set_env.sh
 
 # MindSpore安装 
-RUN CMAKE_ARGS="-DGGML_CANN=on" pip install llama-cpp-python
+# RUN CMAKE_ARGS="-DGGML_CANN=on" pip install llama-cpp-python
 
 # RUN pip install mindnlp
 
