@@ -29,8 +29,8 @@ RUN apt update && \
 RUN wget -O Python.tgz https://www.python.org/ftp/python/$PYTHON_VERSION/Python-$PYTHON_VERSION.tgz --no-check-certificate
 RUN tar -zxvf Python.tgz && cd Python-$PYTHON_VERSION && ./configure --prefix=/usr/local/python --enable-shared && make && make install 
 
-RUN ln -s /usr/local/python3.9.2/bin/python3.9 /usr/local/bin/python && \
-    ln -s /usr/local/python3.9.2/bin/pip3.9 /usr/local/bin/pip
+RUN ln -s /usr/local/python/bin/python3.9 /usr/local/bin/python && \
+    ln -s /usr/local/python/bin/pip3.9 /usr/local/bin/pip
 
 
 # 根据实际mindspore软件包安装对应的python版本
