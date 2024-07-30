@@ -7,7 +7,7 @@ ARG MINDSPORE_PKG=mindspore-{version}-cp39-cp39-linux_aarch64.whl
 # ARG PREBUILD_SH=prebuild.sh 
 # ARG POSTBUILD_SH=postbuild.sh 
 ARG DEBIAN_FRONTEND=noninteractive
-# ARG PYTHON_VERSION=3.9.19
+ARG PYTHON_VERSION=3.9.19
 
 WORKDIR /tmp 
 COPY . ./ 
@@ -24,9 +24,14 @@ RUN apt update && \
     apt install --no-install-recommends curl g++ pkg-config unzip wget build-essential zlib1g-dev  \
         libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libblas3 liblapack3 liblapack-dev \
         openssl libssl-dev libblas-dev gfortran libhdf5-dev libffi-dev  libxml2 \
-        libbz2-dev lzma liblzma-dev libsqlite3-dev -y && \
-    apt install software-properties-common -y && add-apt-repository ppa:deadsnakes/ppa && apt install -y python3.9 && ln -s /usr/bin/python3.9 /usr/local/bin/python && \
-    apt install -y python3.9-distutils && bash -c 'curl https://bootstrap.pypa.io/get-pip.py | python'
+        libbz2-dev lzma liblzma-dev libsqlite3-dev -y
+
+RUN wget -O Python.tgz https://www.python.org/ftp/python/$PYTHON_VERSION/Python-$PYTHON_VERSION.tgz --no-check-certificate
+RUN tar -zxvf Python.tgz && cd Python-$PYTHON_VERSION && ./configure --prefix=/usr/local/python --enable-shared && make && make install 
+
+RUN ln -s /usr/local/python3.9.2/bin/python3.9 /usr/local/bin/python && \
+    ln -s /usr/local/python3.9.2/bin/pip3.9 /usr/local/bin/pip
+
 
 # 根据实际mindspore软件包安装对应的python版本
 
@@ -46,7 +51,7 @@ RUN apt update && \
 
 # 用户需根据实际情况修改PYTHONPATH的路径
 ENV LD_LIBRARY_PATH=/usr/local/python/lib:$LD_LIBRARY_PATH
-ENV PATH=/usr/local/python/bin:$PATH 
+# ENV PATH=/usr/local/python/bin:$PATH 
 ENV PYTHONPATH=/usr/local/python/lib/python3.9/site-packages:$PYTHONPATH   
 
 # 创建HwHiAiUser用户和属主，UID和GID请与物理机保持一致避免出现无属主文件。示例中会自动创建user和对应的group，UID和GID都为1000
