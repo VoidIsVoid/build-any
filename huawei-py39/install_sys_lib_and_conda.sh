@@ -1,5 +1,22 @@
 set -e 
 
+
+apt install -y git
+
+apt-get update -y
+apt-get install software-properties-common -y
+add-apt-repository ppa:ubuntu-toolchain-r/test -y
+apt-get update -y
+apt-get install gcc-9 g++-9 -y
+update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 60 --slave /usr/bin/g++ g++ /usr/bin/g++-9
+update-alternatives --config gcc
+
+
+
+curl -O -L https://github.com/Kitware/CMake/releases/download/v3.30.1/cmake-3.30.1-linux-aarch64.tar.gz
+tar xzf cmake-3.30.1-linux-aarch64.tar.gz
+echo 'export PATH=$PATH:/tmp/cmake-3.30.1-linux-aarch64/bin' >> "/root/.bashrc"
+
 arch=$(uname -m) 
 echo "arch $arch"
 if [ "$arch" = "x86_64" ]; then 
@@ -18,18 +35,3 @@ rm -f miniconda.sh
 /root/miniconda3/bin/conda init bash
 
 
-apt install -y git
-
-apt-get update -y
-apt-get install software-properties-common -y
-add-apt-repository ppa:ubuntu-toolchain-r/test -y
-apt-get update -y
-apt-get install gcc-9 g++-9 -y
-update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 60 --slave /usr/bin/g++ g++ /usr/bin/g++-9
-update-alternatives --config gcc
-
-
-
-curl -O -L https://github.com/Kitware/CMake/releases/download/v3.30.1/cmake-3.30.1-linux-aarch64.tar.gz
-tar xzf cmake-3.30.1-linux-aarch64.tar.gz
-echo 'export PATH=$PATH:/tmp/cmake-3.30.1-linux-aarch64/bin' >> "/root/.bashrc"
