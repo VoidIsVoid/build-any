@@ -1,7 +1,7 @@
 set -e 
 
 
-apt install -y git
+apt install -y git make
 
 apt-get update -y
 apt-get install software-properties-common -y
@@ -33,5 +33,3 @@ bash miniconda.sh -b -p /root/miniconda3
 rm -f miniconda.sh
 
 /root/miniconda3/bin/conda init bash
-
-
