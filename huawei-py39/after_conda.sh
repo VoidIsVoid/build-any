@@ -12,3 +12,4 @@ source /root/miniconda3/bin/activate py39
 pip3 install attrs numpy decorator sympy cffi pyyaml pathlib2 psutil protobuf scipy requests absl-py wheel typing_extensions --no-cache-dir
 
 git clone https://github.com/ggerganov/llama.cpp.git
+rm -rf llama.cpp/.git
