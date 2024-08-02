@@ -18,11 +18,12 @@ rm -f miniconda.sh
 /root/miniconda3/bin/conda init bash
 
 
+apt install -y git
+
 apt install -y software-properties-common
-add-apt-repository ppa:ubuntu-toolchain-r/test
+add-apt-repository -y ppa:ubuntu-toolchain-r/test
 apt install -y gcc-9
 apt install -y g++-9
-apt install git
 update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 60 --slave /usr/bin/g++ g++ /usr/bin/g++-9
 
 
