@@ -21,8 +21,7 @@ rm -f miniconda.sh
 apt install -y git
 
 apt-get update -y
-apt-get install -y build-essential linux-headers-`uname -r`
-apt-get install build-essential software-properties-common -y
+apt-get install software-properties-common -y
 add-apt-repository ppa:ubuntu-toolchain-r/test -y
 apt-get update -y
 apt-get install gcc-9 g++-9 -y
