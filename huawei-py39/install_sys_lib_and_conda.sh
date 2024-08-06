@@ -71,6 +71,10 @@ pip install llama-cpp-python[server] --no-cache-dir
 cd /tmp
 conda install conda-pack
 conda pack -o venv.tar.gz
+mkdir /tmp/python
+mv venv.tar.gz /tmp/python/
+cd /tmp/python/ 
+tar xzf venv.tar.gz
 
 
 echo 'source /usr/local/Ascend/ascend-toolkit/set_env.sh' >> /tmp/env.sh 
