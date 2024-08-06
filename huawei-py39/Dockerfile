@@ -14,9 +14,9 @@ RUN chmod +x ./install_sys_lib_and_conda.sh && bash install_sys_lib_and_conda.sh
 
 FROM base
 
-COPY --from=base /tmp/llama.cpp /app/llama.cpp
-COPY --from=base /tmp/python /app/python
-COPY --from=base /tmp/env.sh /app/env.sh
+COPY --from=build /tmp/llama.cpp /app/llama.cpp
+COPY --from=build /tmp/python /app/python
+COPY --from=build /tmp/env.sh /app/env.sh
 
 ENV START_SHELL python3 -m llama_cpp.server --model /qwen2-7b-instruct-q4_0.gguf --host 0.0.0.0 --port 9000 --model_alias qwen
 
