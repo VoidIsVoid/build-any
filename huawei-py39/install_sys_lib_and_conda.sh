@@ -1,7 +1,7 @@
 set -e 
 
 apt-get update -y
-apt-get install -y git make
+apt-get install -y git make curl
 
 apt-get install software-properties-common -y
 add-apt-repository ppa:ubuntu-toolchain-r/test -y

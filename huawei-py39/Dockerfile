@@ -8,7 +8,6 @@ RUN apt-get update -y && \
 FROM base as build
 WORKDIR /tmp
 COPY . .
-COPY install_sys_lib_and_conda.sh ./
 RUN chmod +x ./install_sys_lib_and_conda.sh && bash install_sys_lib_and_conda.sh
 
 
