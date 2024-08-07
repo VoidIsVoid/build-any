@@ -40,18 +40,19 @@ echo 'source /root/miniconda3/bin/activate py39' >> "/root/.bashrc"
 source /root/miniconda3/bin/activate py39
 pip3 install attrs numpy decorator sympy cffi pyyaml pathlib2 psutil protobuf scipy requests absl-py wheel typing_extensions --no-cache-dir
 
-cp ascend_install.info /etc/
-mkdir -p /usr/local/Ascend/driver/
-cp version.info /usr/local/Ascend/driver/
+# cp ascend_install.info /etc/
+# mkdir -p /usr/local/Ascend/driver/
+# cp version.info /usr/local/Ascend/driver/
 
 
-CANN_CATEGORY="CANN%208.0.RC1"
-CANN_VERSION="8.0.RC1"
-curl -k -o toolkit.run https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/CANN/${CANN_CATEGORY}/Ascend-cann-toolkit_${CANN_VERSION}_linux-aarch64.run?response-content-type=application/octet-stream
-chmod +x toolkit.run
-./toolkit.run --install --quiet
+# CANN_CATEGORY="CANN%208.0.RC1"
+# CANN_VERSION="8.0.RC1"
+# curl -k -o toolkit.run https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/CANN/${CANN_CATEGORY}/Ascend-cann-toolkit_${CANN_VERSION}_linux-aarch64.run?response-content-type=application/octet-stream
+# chmod +x toolkit.run
+# ./toolkit.run --install --quiet
+# rm toolkit.run
 
-source /usr/local/Ascend/ascend-toolkit/set_env.sh
+# source /usr/local/Ascend/ascend-toolkit/set_env.sh
 
 # curl -k -o kernels.run https://ascend-repo.obs.cn-east-2.myhuaweicloud.com/CANN/CANN%208.0.RC1/Ascend-cann-kernels-910_${CANN_VERSION}_linux.run?response-content-type=application/octet-stream
 # chmod +x kernels.run
@@ -59,9 +60,9 @@ source /usr/local/Ascend/ascend-toolkit/set_env.sh
 
 cd /tmp
 git clone https://github.com/ggerganov/llama.cpp.git
-cd llama.cpp
-cmake -B build -DGGML_CANN=ON -DBUILD_SHARED_LIBS=OFF -DCMAKE_LIBRARY_PATH=${ASCEND_TOOLKIT_HOME}\lib64
-cmake --build build --config Release -j
+# cd llama.cpp
+# cmake -B build -DGGML_CANN=ON -DBUILD_SHARED_LIBS=OFF -DCMAKE_LIBRARY_PATH=${ASCEND_TOOLKIT_HOME}\lib64
+# cmake --build build --config Release -j
 
 
 CMAKE_ARGS="-DLLAMA_BUILD=OFF" pip install llama-cpp-python --no-cache-dir
@@ -79,3 +80,6 @@ tar xzf venv.tar.gz
 echo 'source /usr/local/Ascend/ascend-toolkit/set_env.sh' >> /tmp/env.sh 
 echo 'source /app/python/bin/activate' >> /tmp/env.sh 
 echo 'export LLAMA_CPP_LIB=/app/llama.cpp/build/src/libllama.so' >> /tmp/env.sh 
+
+
+echo '/tmp/env.sh' >> /root/.bashrc 

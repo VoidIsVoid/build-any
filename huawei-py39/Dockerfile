@@ -11,13 +11,13 @@ COPY . .
 RUN chmod +x ./install.sh && bash install.sh
 
 
-FROM base
+# FROM base
 
-COPY --from=build /tmp/llama.cpp /app/llama.cpp
-COPY --from=build /tmp/python /app/python
-COPY --from=build /tmp/env.sh /app/env.sh
+# COPY --from=build /tmp/llama.cpp /app/llama.cpp
+# COPY --from=build /tmp/python /app/python
+# COPY --from=build /tmp/env.sh /app/env.sh
 
-ENV START_SHELL python3 -m llama_cpp.server --model /qwen2-7b-instruct-q4_0.gguf --host 0.0.0.0 --port 9000 --model_alias qwen
+# ENV START_SHELL python3 -m llama_cpp.server --model /qwen2-7b-instruct-q4_0.gguf --host 0.0.0.0 --port 9000 --model_alias qwen
 
-CMD source /app/env.sh && \
-    bash -c "$START_SHELL"
+# CMD source /app/env.sh && \
+#     bash -c "$START_SHELL"
