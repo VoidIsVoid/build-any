@@ -61,7 +61,7 @@ pip3 install attrs numpy decorator sympy cffi pyyaml pathlib2 psutil protobuf sc
 cd /tmp
 git clone https://github.com/ggerganov/llama.cpp.git
 # cd llama.cpp
-# cmake -B build -DGGML_CANN=ON -DBUILD_SHARED_LIBS=OFF -DCMAKE_LIBRARY_PATH=${ASCEND_TOOLKIT_HOME}\lib64
+cmake -B build -DGGML_CANN=ON
 # cmake --build build --config Release -j
 
 
@@ -69,8 +69,8 @@ CMAKE_ARGS="-DLLAMA_BUILD=OFF" pip install llama-cpp-python --no-cache-dir
 pip install llama-cpp-python[server] --no-cache-dir
 
 cd /tmp
-conda install conda-pack
-conda pack -o venv.tar.gz
+conda install conda-pack -y -q
+conda pack -o venv.tar.gz -q
 mkdir /tmp/python
 mv venv.tar.gz /tmp/python/
 cd /tmp/python/ 
