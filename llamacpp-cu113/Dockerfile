@@ -8,7 +8,7 @@ RUN git clone https://github.com/ggerganov/llama.cpp.git
 RUN curl -O -L https://github.com/Kitware/CMake/releases/download/v3.30.1/cmake-3.30.1-linux-x86_64.tar.gz
 RUN tar xzf cmake-3.30.1-linux-x86_64.tar.gz
 RUN export PATH=$PATH:/app/cmake-3.30.1-linux-x86_64/bin
-RUN cd llama.cpp && cmake -B build -DGGML_CANN=ON && cmake --build build --config Release -j
+RUN export PATH=$PATH:/app/cmake-3.30.1-linux-x86_64/bin && cd llama.cpp && cmake -B build -DGGML_CANN=ON && cmake --build build --config Release -j
 
 
 FROM ubuntu:20.04 as release
