@@ -15,4 +15,4 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: build and push 
-        run: cd $(cat current) && docker buildx build --platform linux/arm64 --push --target base -t ${{ secrets.DOCKERHUB_USERNAME }}/$(cat docker-name.txt):$(cat docker-tag.txt) .
+        run: cd $(cat current) && docker buildx build --platform linux/arm64 --push -t ${{ secrets.DOCKERHUB_USERNAME }}/$(cat docker-name.txt):$(cat docker-tag.txt) .
