@@ -11,7 +11,7 @@ SHELL ["bash", "-c"]
 RUN export PATH=$PATH:/app/cmake-3.30.1-linux-x86_64/bin && \
     export CMAKE_CUDA_ARCHITECTURES="50;52;61;70;75;80" && \
     cd llama.cpp && \
-    cmake -B build -DGGML_CUDA=ON -DBUILD_SHARED_LIBS=off -DCMAKE_POSITION_INDEPENDENT_CODE=on -DGGML_NATIVE=off -DGGML_AVX=on -DGGML_AVX2=off -DGGML_AVX512=off -DGGML_FMA=off -DGGML_F16C=off -DGGML_OPENMP=off && \
+    cmake -B build -DGGML_CUDA=ON -DBUILD_SHARED_LIBS=off -DCMAKE_POSITION_INDEPENDENT_CODE=on -DGGML_NATIVE=off && \
     cmake --build build --config Release -j
 
 
