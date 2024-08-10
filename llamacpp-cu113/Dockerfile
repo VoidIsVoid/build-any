@@ -14,7 +14,7 @@ RUN export PATH=$PATH:/app/cmake-3.30.1-linux-x86_64/bin && \
     cmake --build build --config Release -j
 
 
-FROM ubuntu:20.04 AS release
+FROM nvidia/cuda:11.3.1-runtime-ubuntu20.04 AS release
 RUN apt-get update -y && \
     apt-get install -y software-properties-common && \
     add-apt-repository ppa:ubuntu-toolchain-r/test -y && \
