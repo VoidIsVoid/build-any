@@ -16,7 +16,7 @@ RUN export PATH=$PATH:/app/cmake-3.30.1-linux-x86_64/bin && \
 
 FROM ubuntu:20.04 as release
 RUN apt-get update -y && \
-    apt-get install -y zlib1g zlib1g-dev openssl libsqlite3-dev libssl-dev libffi-dev unzip pciutils net-tools libblas-dev gfortran libblas3 software-properties-common && \
+    apt-get install -y software-properties-common && \
     add-apt-repository ppa:ubuntu-toolchain-r/test -y && \
     apt-get update -y && \
     apt-get install gcc-9 g++-9 -y && \
