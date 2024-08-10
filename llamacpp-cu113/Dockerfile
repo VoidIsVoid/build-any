@@ -1,7 +1,7 @@
-FROM nvidia/cuda:11.3.1-devel-ubuntu20.04 as build
+FROM nvidia/cuda:11.3.1-devel-ubuntu20.04 AS build
 
 RUN apt update
-env DEBIAN_FRONTEND noninteractive
+ENV DEBIAN_FRONTEND noninteractive
 RUN apt install -y git curl
 WORKDIR /app
 RUN git clone https://github.com/ggerganov/llama.cpp.git
@@ -14,7 +14,7 @@ RUN export PATH=$PATH:/app/cmake-3.30.1-linux-x86_64/bin && \
     cmake --build build --config Release -j
 
 
-FROM ubuntu:20.04 as release
+FROM ubuntu:20.04 AS release
 RUN apt-get update -y && \
     apt-get install -y software-properties-common && \
     add-apt-repository ppa:ubuntu-toolchain-r/test -y && \
