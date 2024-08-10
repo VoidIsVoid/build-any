@@ -2,7 +2,7 @@ FROM nvidia/cuda:11.3.1-devel-ubuntu20.04 AS build
 
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt update
-RUN apt install -y git curl
+RUN apt install -y git curl nvidia-driver-470-server
 WORKDIR /app
 RUN git clone https://github.com/ggerganov/llama.cpp.git
 RUN curl -O -L https://github.com/Kitware/CMake/releases/download/v3.30.1/cmake-3.30.1-linux-x86_64.tar.gz
@@ -11,7 +11,7 @@ SHELL ["bash", "-c"]
 RUN export PATH=$PATH:/app/cmake-3.30.1-linux-x86_64/bin && \
     export CMAKE_CUDA_ARCHITECTURES="50;52;61;70;75;80" && \
     cd llama.cpp && \
-    cmake -B build -DGGML_CUDA=ON && \
+    cmake -B build -DGGML_CUDA=ON -DBUILD_SHARED_LIBS=off -DCMAKE_POSITION_INDEPENDENT_CODE=on -DGGML_NATIVE=off -DGGML_AVX=on -DGGML_AVX2=off -DGGML_AVX512=off -DGGML_FMA=off -DGGML_F16C=off -DGGML_OPENMP=off && \
     cmake --build build --config Release -j
 
 
