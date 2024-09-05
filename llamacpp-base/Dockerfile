@@ -11,7 +11,6 @@ ARG nvidia_binary="NVIDIA-Linux-x86_64-${nvidia_binary_version}.run"
 ARG cuda_version=12.2.0
 ARG cuda_buildin_driver_version=535.54.03
 
-
 WORKDIR /tmp
 RUN curl -o driver_installer.run https://us.download.nvidia.com/XFree86/Linux-x86_64/${nvidia_binary_version}/${nvidia_binary}
 RUN curl -o cuda_toolkit_installer.run https://developer.download.nvidia.com/compute/cuda/${cuda_version}/local_installers/cuda_${cuda_version}_${cuda_buildin_driver_version}_linux.run
@@ -26,7 +25,7 @@ RUN cd /tmp && \
 
 WORKDIR /app/
 RUN curl -O https://github.com/Kitware/CMake/releases/download/v3.30.1/cmake-3.30.1-linux-x86_64.tar.gz && \
-    tar xvf cmake-3.30.1-linux-x86_64.tar.gz && \
+    tar xzf cmake-3.30.1-linux-x86_64.tar.gz && \
     mv cmake-3.30.1-linux-x86_64 cmake && \
     rm -f cmake-3.30.1-linux-x86_64.tar.gz
 
