@@ -8,8 +8,8 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
 
 ARG nvidia_binary_version="550.90.07"
 ARG nvidia_binary="NVIDIA-Linux-x86_64-${nvidia_binary_version}.run"
-ARG cuda_version=12.2.2
-ARG cuda_buildin_driver_version=535.104.05
+ARG cuda_version=12.4.1
+ARG cuda_buildin_driver_version=550.54.15
 
 WORKDIR /tmp
 RUN curl -o driver_installer.run https://us.download.nvidia.com/XFree86/Linux-x86_64/${nvidia_binary_version}/${nvidia_binary}
