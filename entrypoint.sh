@@ -8,5 +8,5 @@ FILE="run.sh"
 if [ -f "$FILE" ]; then
     exec "$FILE"
 else
-    docker buildx build --push -t ${{ secrets.DOCKERHUB_USERNAME }}/$(cat docker-name.txt):$(cat docker-tag.txt) .
+    docker buildx build --push -t ${DOCKER_USERNAME}/$(cat docker-name.txt):$(cat docker-tag.txt) .
 fi

@@ -19,4 +19,4 @@ jobs:
             # sudo sed -i -z 's/\(.*\)}\(.*\)/\1,"data-root":"\/mnt\/docker" }\2/' /etc/docker/daemon.json && 
             # sudo systemctl restart docker && 
             # docker buildx build --push -t ${{ secrets.DOCKERHUB_USERNAME }}/$(cat docker-name.txt):$(cat docker-tag.txt) .
-        run: bash entrypoint.sh
+        run: export DOCKER_USERNAME=${{ secrets.DOCKERHUB_USERNAME }} && bash entrypoint.sh
