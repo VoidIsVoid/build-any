@@ -1,4 +1,4 @@
-FROM ubuntu:22.04 AS base
+FROM ubuntu:20.04 AS base
 ENV TZ=Asia/Shanghai
 RUN export DEBIAN_FRONTEND=noninteractive && \
     apt update && \
