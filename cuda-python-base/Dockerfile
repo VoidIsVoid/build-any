@@ -2,7 +2,7 @@ FROM ubuntu:22.04 AS base
 ENV TZ=Asia/Shanghai
 RUN export DEBIAN_FRONTEND=noninteractive && \
     apt update && \
-    apt install -y curl kmod libxml2 python3.10 python3-pip && \
+    apt install -y curl kmod libxml2 python3.9 python3-pip && \
     rm -rf /var/lib/apt/lists/*
 
 ARG nvidia_binary_version="550.90.07"
