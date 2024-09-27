@@ -7,7 +7,7 @@ sudo systemctl restart docker
 FILE="run.sh"
 
 if [ -f "$FILE" ]; then
-    exec "$FILE"
+    bash "$FILE"
 else
     docker buildx build --push -t ${DOCKER_USERNAME}/$(cat docker-name.txt):$(cat docker-tag.txt) .
 fi
