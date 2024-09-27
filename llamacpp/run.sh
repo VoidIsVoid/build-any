@@ -1,3 +1,4 @@
+#!/bin/bash
 set -e 
 git clone https://github.com/ggerganov/llama.cpp.git
 cd llama.cpp

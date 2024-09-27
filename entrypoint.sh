@@ -1,3 +1,4 @@
+#!
 set -e
 cd $(cat current)
 sudo sed -i -z 's/\(.*\)}\(.*\)/\1,"data-root":"\/mnt\/docker" }\2/' /etc/docker/daemon.json
