@@ -24,11 +24,10 @@ RUN curl -s -L -O https://github.com/Kitware/CMake/releases/download/v3.30.1/cma
     mv cmake-3.30.1-linux-x86_64 cmake && \
     rm -f cmake-3.30.1-linux-x86_64.tar.gz
 
-RUN git clone https://github.com/ggerganov/llama.cpp.git && \
-   tag=$(git describe --tags $(git rev-list --tags --max-count=1)) && \
-   cd llama.cpp && \
-   source /env.sh && \
+COPY llama.cpp /app/llama.cpp
+RUN cd llama.cpp && \
+   . /env.sh && \
    cmake -B build -DGGML_CUDA=ON \
       '-DCMAKE_CUDA_ARCHITECTURES=60;61;70;72;75;80;86;87' \
       -DGGML_CUDA_F16=ON && \
-      cmake --build build --config Release -j8
+      cmake --build build --config Release -j
