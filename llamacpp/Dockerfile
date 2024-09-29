@@ -1,33 +1,42 @@
-FROM ubuntu:20.04 as base
-ENV TZ=Asia/Shanghai
-RUN export DEBIAN_FRONTEND=noninteractive && \
-    apt update && \
-    apt install -y curl git make gcc g++ kmod libxml2 && \
-    rm -rf /var/lib/apt/lists/*
+ARG UBUNTU_VERSION=22.04
+# This needs to generally match the container host's environment.
+ARG CUDA_VERSION=12.2.2
+# Target the CUDA build image
+ARG BASE_CUDA_DEV_CONTAINER=nvidia/cuda:${CUDA_VERSION}-devel-ubuntu${UBUNTU_VERSION}
+# Target the CUDA runtime image
+ARG BASE_CUDA_RUN_CONTAINER=nvidia/cuda:${CUDA_VERSION}-runtime-ubuntu${UBUNTU_VERSION}
 
+FROM ${BASE_CUDA_DEV_CONTAINER} AS build
 
-ARG cuda_version=12.2.0
-ARG cuda_buildin_driver_version=535.54.03
+# CUDA architecture to build for (defaults to all supported archs)
+ARG CUDA_DOCKER_ARCH=default
 
-WORKDIR /tmp
-RUN curl -o cuda_toolkit_installer.run https://developer.download.nvidia.com/compute/cuda/${cuda_version}/local_installers/cuda_${cuda_version}_${cuda_buildin_driver_version}_linux.run && \
-    sh ./cuda_toolkit_installer.run --silent --toolkit --no-drm && \
-    rm ./cuda_toolkit_installer.run && \
-    echo 'export PATH=$PATH:/usr/local/cuda/bin' >> /env.sh && \
-    echo 'export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH' >> /env.sh && \
-    echo 'source /env.sh' >> /root/.bashrc && \
-    echo 'export PATH=$PATH:/app/cmake/bin:/app/llama.cpp/build/bin' >> /env.sh
+RUN apt-get update && \
+    apt-get install -y build-essential git cmake libcurl4-openssl-dev
 
-WORKDIR /app/
-RUN curl -s -L -O https://github.com/Kitware/CMake/releases/download/v3.30.1/cmake-3.30.1-linux-x86_64.tar.gz && \
-    tar xzf cmake-3.30.1-linux-x86_64.tar.gz && \
-    mv cmake-3.30.1-linux-x86_64 cmake && \
-    rm -f cmake-3.30.1-linux-x86_64.tar.gz
+WORKDIR /app
 
-COPY llama.cpp /app/llama.cpp
-RUN cd llama.cpp && \
-   . /env.sh && \
-   cmake -B build -DGGML_CUDA=ON \
-      '-DCMAKE_CUDA_ARCHITECTURES=60;61;70;72;75;80;86;87' \
-      -DGGML_CUDA_F16=ON && \
-      cmake --build build --config Release -j
+COPY llama.cpp /app
+
+# Use the default CUDA archs if not specified
+RUN if [ "${CUDA_DOCKER_ARCH}" != "default" ]; then \
+        export CMAKE_ARGS="-DCMAKE_CUDA_ARCHITECTURES=${CUDA_DOCKER_ARCH}"; \
+    fi && \
+    cmake -B build -DGGML_CUDA=ON -DLLAMA_CURL=ON ${CMAKE_ARGS} -DGGML_CUDA_F16=ON -DCMAKE_EXE_LINKER_FLAGS=-Wl,--allow-shlib-undefined . && \
+    cmake --build build --config Release --target llama-server -j$(nproc)
+
+FROM ${BASE_CUDA_RUN_CONTAINER} AS runtime
+
+RUN apt-get update && \
+    apt-get install -y libcurl4-openssl-dev libgomp1 curl
+
+COPY --from=build /app/build/ggml/src/libggml.so /libggml.so
+COPY --from=build /app/build/src/libllama.so /libllama.so
+COPY --from=build /app/build/bin/llama-server /llama-server
+
+# Must be set to 0.0.0.0 so it can listen to requests from host machine
+ENV LLAMA_ARG_HOST=0.0.0.0
+
+HEALTHCHECK CMD [ "curl", "-f", "http://localhost:8080/health" ]
+
+ENTRYPOINT [ "/llama-server" ]
