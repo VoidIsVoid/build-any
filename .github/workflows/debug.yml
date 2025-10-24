@@ -15,6 +15,6 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: setup
-        run: sudo bash -c "mkdir -p /etc/docker && sudo echo '{\"data-root\":\"/mnt/docker\"}'  > /etc/docker/daemon.json && systemctl restart docker"
+        run: sudo bash -c "mkdir -p /etc/docker && sudo echo '{\"data-root\":\"/mnt/docker\"}'  > /etc/docker/daemon.json && systemctl restart docker && touch /tmp/keepalive"
       - name: Setup Debug Session
         uses: eyu-dev/debugger-action@master
