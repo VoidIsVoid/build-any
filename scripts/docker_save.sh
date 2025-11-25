@@ -1,6 +1,7 @@
+set -eo
 function docker_save(){
   sudo docker run \
-    -it --rm \
+    -i --rm \
     -v /var/run/docker.sock:/var/run/docker.sock -v .:/app -w /app \
     shinomineko/skopeo:latest \
     copy docker://$1 docker-archive:$2:$1
