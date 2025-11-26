@@ -1,11 +1,8 @@
 set -eo
 function docker_save(){
-  sudo docker run \
-    -i --rm \
-    -v /var/run/docker.sock:/var/run/docker.sock -v .:/app -w /app \
-    shinomineko/skopeo:latest \
-    copy docker://$1 docker-archive:$2:$1
-  gzip $2
+  skopeo copy docker://$1 docker-archive:$2:$1
+  echo "docker images download finished. start gzip"
+  pigz $2
 }
 
 docker_image_name=$DOKCER_IMAGE
