@@ -14,7 +14,8 @@ docker_image_file=$DOCKER_TARGET
 cd /mnt
 GIT_LFS_SKIP_SMUDGE=1 git clone "https://oauth2:${MODELSCOPE_TOKEN}@www.modelscope.cn/datasets/gimling/test.git"
 cd test
-docker_save "$docker_image_name" "$docker_image_file"
 git lfs install
+mkdir -p $(dirname "$docker_image_file")
+docker_save "$docker_image_name" "$docker_image_file"
 git commit -am "add $docker_image_name" .
 git push
