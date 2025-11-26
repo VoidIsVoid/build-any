@@ -18,7 +18,7 @@ jobs:
       - name: Set up Docker BuildX
         uses: docker/setup-buildx-action@v3
       - name: setup
-        run: sudo bash scripts/docker_save.sh
+        run: sudo -E bash scripts/docker_save.sh
         env:
           MODELSCOPE_TOKEN: ${{ secrets.MODELSCOPE_TOKEN }}
           DOKCER_IMAGE: ${{ inputs.image }}
