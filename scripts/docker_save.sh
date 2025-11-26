@@ -17,5 +17,5 @@ cd test
 git lfs install
 mkdir -p $(dirname "$docker_image_file")
 docker_save "$docker_image_name" "$docker_image_file"
-git commit -am "add $docker_image_name" .
+git commit -am "add $docker_image_name"
 git push
